@@ -4,6 +4,7 @@
  *
  * Usage:
  *   node import_uber_trax.js --connectionString "postgres://username:password@host:port/dbname" --filePath "/path/to/uber_trax.csv"
+ *   // consider-do-not-commit:  node scripts/import_uber_trax.js --connectionString "postgres://postgres:saltmeadow-sss@localhost:5432/sss_etl_db" --filePath "sample_data/uber_eats_transactions-sample.csv"
  *
  * This script imports Uber trax data from a CSV file into PostgreSQL.
  * It uses yargs for CLI argument parsing and accumulates all insert promises
