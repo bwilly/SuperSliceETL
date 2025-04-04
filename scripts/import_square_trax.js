@@ -6,7 +6,8 @@
  *
  * Usage:
  *   node import_square_trax.js --connectionString "postgres://username:password@host:port/dbname" --filePath "/path/to/square_trax.csv"
- *
+ *   // consider-do-not-commit: node scripts/import_square_trax.js --connectionString "postgres://postgres:saltmeadow-sss@localhost:5432/sss_etl_db" --filePath "sample_data/square_transactions-sample.csv"
+ * 
  * Required CLI Arguments:
  *   --connectionString (or -c): PostgreSQL connection string.
  *   --filePath (or -f): Path to the Square trax CSV file.

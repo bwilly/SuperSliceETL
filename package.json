@@ -2,17 +2,21 @@
   "name": "csv-import-project",
   "version": "1.0.0",
   "description": "Scripts to import CSV files into PostgreSQL for various platforms.",
-  "main": "index.js",
+  "main": "src/main_pipeline.js",
   "scripts": {
-    "import:uber": "node scripts/import_uber_trax.js",
-    "import:square": "node scripts/import_square_trax.js",
-    "import:slice": "node scripts/import_slice_trax.js"
+    "import:uber": "node src/scripts/import_uber_trax.js",
+    "import:square": "node src/scripts/import_square_trax.js",
+    "import:slice": "node src/scripts/import_slice_trax.js",
+    "start": "node src/main_pipeline.js"
   },
   "dependencies": {
     "csv-parser": "^3.0.0",
+    "js-yaml": "^4.1.0",
     "pg": "^8.0.0",
+    "winston": "^3.8.2",
     "yargs": "^17.0.0"
   },
   "author": "",
   "license": "ISC"
 }
+
