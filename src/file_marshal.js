@@ -38,8 +38,20 @@ async function processFiles(fileList, parserFactory, config, logger) {
       const parentFolder = path.basename(path.dirname(filePath)).toLowerCase();
       const platform = parentFolder; // e.g., 'uber', 'square', or 'slice'
       
-      // Optionally, determine file type (e.g., 'trax' or 'itemized') from filename.
-      const fileType = /trax/i.test(filePath) ? 'trax' : 'itemized';
+      // Determine file type using regex values from the config.
+      // Assume config.fileTypeRegexes has two properties: 'trax' and 'itemz'.
+      const traxRegex = new RegExp(config.fileTypeRegexes.trax, 'i');
+      const itemzRegex = new RegExp(config.fileTypeRegexes.itemz, 'i');
+      let fileType;
+      if (traxRegex.test(filePath)) {
+        fileType = 'trax';
+      } else if (itemzRegex.test(filePath)) {
+        fileType = 'itemz';
+      } else {
+        throw new Error(`File type for ${filePath} does not match either trax or itemz regex.`);
+      }
+
+      logger.info(`Parser platform: ${platform}, type: ${fileType}`);
 
       // Get the appropriate parser instance.
       const parser = parserFactory.getParser(platform, fileType);
