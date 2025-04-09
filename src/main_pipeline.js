@@ -17,7 +17,7 @@ const winston = require('winston');
 const path = require('path');
 
 // Load configuration from YAML
-const config = yaml.load(fs.readFileSync('../config/config.yaml', 'utf8'));
+const config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'));
 
 // Initialize Winston logger with debug level.
 const logger = winston.createLogger({
