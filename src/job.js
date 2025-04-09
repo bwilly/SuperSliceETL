@@ -38,3 +38,16 @@
  * UnifiedTransformer
  *  
  */
+
+/**
+ * Queries for dev, debug, troubleshooting
+ * 
+ 
+\dt
+
+SELECT external_store_id, order_id, order_uuid, order_status, date_ordered, time_customer_ordered, workflow_uuid, source_file  FROM uber_trax LIMIT 100;
+
+select * from unified_trax;
+
+ * 
+ */

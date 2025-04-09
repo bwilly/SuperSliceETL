@@ -3,6 +3,8 @@ const csv = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
 const CsvToPostgresFileParser = require('../parser_abstract'); // our abstract class
+const UnifiedTransformerFactory = require('../unified_transformer_factory');
+
 
 class UberParser extends CsvToPostgresFileParser {
   /**
@@ -44,63 +46,71 @@ class UberParser extends CsvToPostgresFileParser {
       let rowCount = 0;
       const insertPromises = [];
       fs.createReadStream(filePath)
-        .pipe(csv({
+        // .pipe(csv({
           // headers: true,
-          mapHeaders: ({ header }) => header.trim().toLowerCase()
+          // mapHeaders: ({ header }) => header.trim().toLowerCase()
+        // }))
+        .pipe(csv({
+          //headers: true,
+          mapHeaders: ({ header }) =>
+            header.trim().toLowerCase().replace(/\s+/g, '_').replace(/[?]/g, '')
         }))
-        .on('headers', (headers) => {
-          const missing = this.expectedHeaders.filter(exp => !headers.includes(exp));
-          if (missing.length > 0) {
-            return reject(new Error(`Missing headers in file: ${missing.join(', ')}`));
-          }
-        })
+        // .on('headers', (headers) => {
+        //   const missing = this.expectedHeaders.filter(exp => !headers.includes(exp));
+        //   if (missing.length > 0) {
+        //     return reject(new Error(`Missing headers in file: ${missing.join(', ')}`));
+        //   }
+        // })
         .on('data', (row) => { 
+          
+
+
           // Transform boolean fields using bracket notation.
           row['scheduled?'] = row['scheduled?'] === '1';
           row['completed?'] = row['completed?'] === '1';
-          row['online order?'] = row['online order?'] === '1';
+          row['online_order?'] = row['online_order?'] === '1';
           // Add source file info for provenance.
           row.source_file = filePath;
           
           const values = [
             row.store,
-            row['external store id'],
+            row['external_store_id'],
             row.country,
-            row['country code'],
+            row['country_code'],
             row.city,
-            row['order id'],
-            row['order uuid'],
-            row['order status'],
-            row['delivery status'],
+            row['order_id'],
+            row['order_uuid'],
+            row['order_status'],
+            row['delivery_status'],
             row['scheduled?'],
             row['completed?'],
-            row['online order?'],
-            row['canceled by'],
-            parseInt(row['menu item count'], 10) || null,
-            row['currency code'],
-            this.parseNumber(row['ticket size']),
-            row['date ordered'],
-            row['time customer ordered'],
-            row['cancellation time'] && row['cancellation time'].trim() !== '' ? row['cancellation time'] : null,
-            row['time merchant accepted'] && row['time merchant accepted'].trim() !== '' ? row['time merchant accepted'] : null,
-            this.parseNumber(row['time to accept']),
-            this.parseNumber(row['original prep time']),
-            row['prep time increased?'] === '1',
-            this.parseNumber(row['increased prep time']),
-            row['courier arrival time'] && row['courier arrival time'].trim() !== '' ? row['courier arrival time'] : null,
-            row['time courier started trip'] && row['time courier started trip'].trim() !== '' ? row['time courier started trip'] : null,
-            row['time courier delivered'] && row['time courier delivered'].trim() !== '' ? row['time courier delivered'] : null,
-            this.parseNumber(row['total delivery time']),
-            this.parseNumber(row['courier wait time (restaurant)']),
-            this.parseNumber(row['courier wait time (eater)']),
-            this.parseNumber(row['total prep & handoff time']),
-            this.parseNumber(row['order duration']),
-            row['delivery batch type'],
-            row['fulfillment type'],
-            row['order channel'],
-            row['eats brand'],
-            row['subscription pass'],
-            row['workflow uuid'],
+            row['online_order?'],
+            row['canceled_by'],
+            parseInt(row['menu_item_count'], 10) || null,
+            row['currency_code'],
+            this.parseNumber(row['ticket_size']),
+            row['date_ordered'],
+            row['time_customer_ordered'],
+            row['cancellation_time'] && row['cancellation_time'].trim() !== '' ? row['cancellation_time'] : null,
+            row['time_merchant_accepted'] && row['time_merchant_accepted'].trim() !== '' ? row['time_merchant_accepted'] : null,
+            this.parseNumber(row['time_to_accept']),
+            this.parseNumber(row['original_prep_time']),
+            row['prep_time_increased?'] === '1',
+            this.parseNumber(row['increased_prep_time']),
+            row['courier_arrival_time'] && row['courier_arrival_time'].trim() !== '' ? row['courier_arrival_time'] : null,
+            row['time_courier_started_trip'] && row['time_courier_started_trip'].trim() !== '' ? row['time_courier_started_trip'] : null,
+            row['time_courier_delivered'] && row['time_courier_delivered'].trim() !== '' ? row['time_courier_delivered'] : null,
+            this.parseNumber(row['total_delivery_time']),
+            this.parseNumber(row['courier_wait_time_restaurant']),
+            this.parseNumber(row['courier_wait_time_eater']),
+            this.parseNumber(row['total_prep_handoff_time']),
+            this.parseNumber(row['order_duration']),
+            row['delivery_batch_type'],
+            row['fulfillment_type'],
+            row['order_channel'],
+            row['eats_brand'],
+            row['subscription_pass'],
+            row['workflow_uuid'],
             row.source_file
           ];
           
@@ -124,6 +134,13 @@ class UberParser extends CsvToPostgresFileParser {
             insertPromises.push(this.dbConnection.query(query, values));
             rowCount++;
           }
+
+          const unifiedTransformer = UnifiedTransformerFactory.getTransformer('uber', this.dbConnection);
+          unifiedTransformer.processRow(row).catch(err => {
+            console.error('Error processing unified row:', err);
+          });
+
+
         })
         .on('end', async () => {
           try {

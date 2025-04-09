@@ -14,7 +14,8 @@ class UberUnifiedTransformer extends UnifiedTransformer {
       // Use order_uuid as the external order identifier.
       external_order_id: row.order_uuid,
       // Combine date_ordered and time_customer_ordered into a single timestamp.
-      order_timestamp: new Date(`${row.date_ordered} ${row.time_customer_ordered}`),
+      // order_timestamp: new Date(`${row.date_ordered} ${row.time_customer_ordered}`),
+      order_timestamp: new Date(`${row.time_customer_ordered}`),
       // Uber may not supply a customer field.
       customer: null,
       // Use the store field.

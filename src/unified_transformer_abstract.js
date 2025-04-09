@@ -45,7 +45,7 @@ class UnifiedTransformer {
         ) VALUES (
           $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
         )
-        ON CONFLICT (platform, external_order_id) DO NOTHING;
+        ON CONFLICT (platform, external_order_id) DO NOTHING; -- todo: log conflict 
       `;
       const values = [
         unifiedRow.platform,
@@ -69,9 +69,23 @@ class UnifiedTransformer {
      * @param {object} row - A source-specific parsed row.
      * @returns {Promise}
      */
+    // async processRow(row) {
+     
+    //   const unifiedRow = this.transformRow(row);
+    //   console.log(row);
+    //   return this.insertUnifiedRow(unifiedRow);
+    // }
     async processRow(row) {
       const unifiedRow = this.transformRow(row);
-      return this.insertUnifiedRow(unifiedRow);
+      console.log("Transformed unified row:", unifiedRow);
+      try {
+        const result = await this.insertUnifiedRow(unifiedRow);
+        console.log("Insert successful, DB response:", result);
+        return result;
+      } catch (err) {
+        console.error("Error inserting unified row:", err);
+        throw err;
+      }
     }
   }
   

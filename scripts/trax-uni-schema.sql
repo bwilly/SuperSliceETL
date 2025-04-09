@@ -15,5 +15,6 @@ CREATE TABLE unified_trax (
   tax NUMERIC(10,2),                 -- Tax amount.
   metadata JSONB,                    -- Any additional details stored as JSON.
   source_file TEXT,                  -- Provenance: original CSV file path.
-  created_at TIMESTAMPTZ DEFAULT now()  -- Record insertion timestamp.
+  created_at TIMESTAMPTZ DEFAULT now(),  -- Record insertion timestamp.
+  CONSTRAINT uq_platform_external_order_id UNIQUE (platform, external_order_id)
 );

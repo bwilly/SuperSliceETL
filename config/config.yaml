@@ -9,9 +9,13 @@ logFile: "sss-etl-app.log"              # Log file name.
 database:
   connectionString: "postgres://postgres:saltmeadow-sss@localhost:5432/sss_etl_db"
 # Additional settings for the parser factory if needed.
+fileTypeRegexes:
+  trax: "transaction"
+  itemz: "item(s)?"
 platforms:
   uber:
     type: "uber"
+    writeIsolated: false
     expectedHeaders:
       - "Store"
       - "External Store ID"
@@ -53,6 +57,7 @@ platforms:
       - "Workflow UUID"
   square:
     type: "square"
+    writeIsolated: true
     expectedHeaders:
       - "Date"
       - "Time"
@@ -109,6 +114,7 @@ platforms:
       - "Unattributed Tips"
   slice:
     type: "slice"
+    writeIsolated: true
     expectedHeaders:
       - "Order #"
       - "Order Date"
