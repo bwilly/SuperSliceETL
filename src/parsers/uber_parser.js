@@ -136,9 +136,12 @@ class UberParser extends CsvToPostgresFileParser {
           }
 
           const unifiedTransformer = UnifiedTransformerFactory.getTransformer('uber', this.dbConnection);
-          unifiedTransformer.processRow(row).catch(err => {
-            console.error('Error processing unified row:', err);
-          });
+          insertPromises.push(
+            unifiedTransformer.processRow(row).catch(err => {
+              console.error('Error processing unified row:', err);
+              // todo: add logger
+            })
+          );
 
 
         })
