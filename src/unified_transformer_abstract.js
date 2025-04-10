@@ -45,7 +45,18 @@ class UnifiedTransformer {
         ) VALUES (
           $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
         )
-        ON CONFLICT (platform, external_order_id) DO NOTHING; -- todo: log conflict 
+        ON CONFLICT (platform, external_order_id)
+    DO UPDATE SET
+      order_timestamp = EXCLUDED.order_timestamp,
+      customer = EXCLUDED.customer,
+      store = EXCLUDED.store,
+      fulfillment_type = EXCLUDED.fulfillment_type,
+      order_status = EXCLUDED.order_status,
+      order_total = EXCLUDED.order_total,
+      tip = EXCLUDED.tip,
+      tax = EXCLUDED.tax,
+      metadata = EXCLUDED.metadata,
+      source_file = EXCLUDED.source_file; 
       `;
       const values = [
         unifiedRow.platform,
