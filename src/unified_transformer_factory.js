@@ -1,7 +1,7 @@
 // unified_transformer_factory.js
 
 const UberUnifiedTransformer = require('./parsers/uber_unified_transformer');
-// const SquareUnifiedTransformer = require('./square_unified_transformer');
+const SquareUnifiedTransformer = require('./parsers/square_unified_transformer');
 // const SliceUnifiedTransformer = require('./slice_unified_transformer');
 
 class UnifiedTransformerFactory {
@@ -15,8 +15,8 @@ class UnifiedTransformerFactory {
     switch (platform.toLowerCase()) {
       case 'uber':
         return new UberUnifiedTransformer(dbConnection);
-      // case 'square':
-      //   return new SquareUnifiedTransformer(dbConnection);
+      case 'square':
+        return new SquareUnifiedTransformer(dbConnection);
       // case 'slice':
       //   return new SliceUnifiedTransformer(dbConnection);
       default:

@@ -48,6 +48,8 @@
 SELECT external_store_id, order_id, order_uuid, order_status, date_ordered, time_customer_ordered, workflow_uuid, source_file  FROM uber_trax LIMIT 100;
 
 select * from unified_trax;
+SELECT id, platform, external_order_id, order_timestamp, customer, fulfillment_type, order_status, order_total FROM unified_trax LIMIT 100;
+
 
  * 
  */

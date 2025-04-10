@@ -64,7 +64,7 @@ dbClient.connect().then(() => {
       logger.error('Error scanning folder: ' + err.message);
     })
     .finally(() => {
-      dbClient.end().then(() => logger.info('Database connection closed.')); // todo:removeMe:workingHere
+      dbClient.end().then(() => logger.info('Database connection closed.')); 
     });
 }).catch(err => {
   logger.error('Database connection failed: ' + err.message);
