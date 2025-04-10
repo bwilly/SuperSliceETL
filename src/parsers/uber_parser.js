@@ -60,7 +60,7 @@ class UberParser extends CsvToPostgresFileParser {
         //   if (missing.length > 0) {
         //     return reject(new Error(`Missing headers in file: ${missing.join(', ')}`));
         //   }
-        // })
+        // }) todo: re-impl with lowercase and replace
         .on('data', (row) => { 
           
 

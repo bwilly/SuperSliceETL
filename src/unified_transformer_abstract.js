@@ -77,10 +77,10 @@ class UnifiedTransformer {
     // }
     async processRow(row) {
       const unifiedRow = this.transformRow(row);
-      console.log("Transformed unified row:", unifiedRow);
+      // console.log("Transformed unified row:", unifiedRow);
       try {
         const result = await this.insertUnifiedRow(unifiedRow);
-        console.log("Insert successful, DB response:", result);
+        // console.log("Insert successful, DB response:", result);
         return result;
       } catch (err) {
         console.error("Error inserting unified row:", err);
