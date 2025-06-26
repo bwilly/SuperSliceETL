@@ -39,6 +39,9 @@
  *  
  */
 
+// Got the trax loading on April 10, 2025
+// not yet the itemz
+
 /**
  * Queries for dev, debug, troubleshooting
  * 
@@ -51,5 +54,13 @@ select * from unified_trax;
 SELECT id, platform, external_order_id, order_timestamp, customer, fulfillment_type, order_status, order_total FROM unified_trax LIMIT 100;
 
 
+ * 
+ */
+
+/**
+ * 
+ * Export DB to CSV for graphing
+ * 
+ * see evernote
  * 
  */

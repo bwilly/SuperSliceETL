@@ -75,7 +75,7 @@ i want one table for transactions (that is mostly orders. some might be charges 
 
 Overview, Apr2'25
 
-node main_pipeline.js
+node src/main_pipeline.js
 
 FolderScanner finds files. A module that reads the immediate files from a folder and filters by a regex.
 

@@ -3,14 +3,14 @@ rawCsvDir: "./raw_csv"          # Relative path to the folder containing raw CSV
 archivePath: "./archive"        # Path where successfully processed files will be moved.
 failedPath: "./failed"          # Path where files with errors will be moved.
 fileRegex: ".*\\.csv$"          # Regular expression to match CSV files.
-dryRun: true                   # Set to true for a dry-run (files won't be moved).
+dryRun: false                   # Set to true for a dry-run (files won't be moved).
 logLevel: "debug"               # Winston log level.
 logFile: "sss-etl-app.log"              # Log file name.
 database:
   connectionString: "postgres://postgres:saltmeadow-sss@localhost:5432/sss_etl_db"
 # Additional settings for the parser factory if needed.
 fileTypeRegexes:
-  trax: "transaction"
+  trax: "order"
   itemz: "item(s)?"
 platforms:
   uber:
